@@ -1,19 +1,25 @@
 import React from 'react';
-import type { Session } from '../types.ts';
+import type { Session } from '../types';
 import { useNavigate, useParams } from 'react-router-dom';
 
 interface SessionCardProps {
   session: Session;
+  onClick?: () => void;
 }
 
-const SessionCard: React.FC<SessionCardProps> = ({ session }) => {
+const SessionCard: React.FC<SessionCardProps> = ({ session, onClick }) => {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const isActive = id === session.id;
 
+  const handleClick = () => {
+    navigate(`/sessions/${session.id}`);
+    if (onClick) onClick();
+  };
+
   return (
     <div
-      onClick={() => navigate(`/sessions/${session.id}`)}
+      onClick={handleClick}
       className={`p-4 rounded-xl cursor-pointer transition-all duration-200 border ${
         isActive
           ? 'bg-blue-50 border-blue-200 shadow-sm'
